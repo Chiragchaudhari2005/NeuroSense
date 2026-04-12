@@ -134,15 +134,11 @@ export function MRIUpload({ onRestart }: Props) {
           </div>
         </div>
 
-        <div style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '12px', padding: '2rem', marginBottom: '2rem' }}>
-           {preview && (
-              <img src={preview} alt="MRI Preview" style={{ width: '200px', height: '200px', objectFit: 'cover', borderRadius: '12px', marginBottom: '1.5rem', border: '2px solid rgba(255, 255, 255, 0.1)' }} />
-           )}
-          <h3 style={{ marginBottom: '0.5rem', color: 'var(--text-muted)' }}>AI Confidence Score</h3>
-          <div style={{ fontSize: '3rem', fontWeight: 'bold' }}>
-            {(prediction.probability * 100).toFixed(1)}%
+        {preview && (
+          <div style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '12px', padding: '2rem', marginBottom: '2rem' }}>
+            <img src={preview} alt="MRI Preview" style={{ width: '200px', height: '200px', objectFit: 'cover', borderRadius: '12px', border: '2px solid rgba(255, 255, 255, 0.1)' }} />
           </div>
-        </div>
+        )}
 
         <button className="btn btn-secondary" onClick={onRestart}>
           <RefreshCw size={20} /> Upload Another Scan
