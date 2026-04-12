@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { MemoryTest } from './MemoryTest';
 import { ReactionTest } from './ReactionTest';
 import { LogicTest } from './LogicTest';

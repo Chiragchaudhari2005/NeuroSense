@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { LandingPage } from './components/LandingPage';
 import { DemographicsForm } from './components/DemographicsForm';
 import { CognitiveTest } from './components/tests/CognitiveTest';
 import { ResultDashboard } from './components/ResultDashboard';
+import { MRIUpload } from './components/MRIUpload';
 
 function App() {
   const [step, setStep] = useState(0);
+  const [mode, setMode] = useState<'test' | 'mri' | null>(null);
   const [demoData, setDemoData] = useState<any>(null);
   const [cognitiveScore, setCognitiveScore] = useState<number | null>(null);
 
-  const startAssessment = () => setStep(1);
+  const startAssessment = (selectedMode: 'test' | 'mri') => {
+    setMode(selectedMode);
+    if (selectedMode === 'test') {
+      setStep(1);
+    } else {
+      setStep(4); // 4 will be MRI Upload
+    }
+  };
   
   const handleDemoComplete = (data: any) => {
     setDemoData(data);
@@ -23,6 +32,7 @@ function App() {
 
   const restart = () => {
     setStep(0);
+    setMode(null);
     setDemoData(null);
     setCognitiveScore(null);
   };
@@ -42,13 +52,16 @@ function App() {
 
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
         {step === 0 && <LandingPage onStart={startAssessment} />}
-        {step === 1 && <DemographicsForm onComplete={handleDemoComplete} />}
-        {step === 2 && <CognitiveTest onComplete={handleTestComplete} />}
-        {step === 3 && (
+        {step === 1 && mode === 'test' && <DemographicsForm onComplete={handleDemoComplete} />}
+        {step === 2 && mode === 'test' && <CognitiveTest onComplete={handleTestComplete} />}
+        {step === 3 && mode === 'test' && (
           <ResultDashboard 
             data={{ ...demoData, cognitive_score: cognitiveScore }}
             onRestart={restart}
           />
+        )}
+        {step === 4 && mode === 'mri' && (
+          <MRIUpload onRestart={restart} />
         )}
       </main>
 

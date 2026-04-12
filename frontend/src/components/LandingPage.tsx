@@ -1,8 +1,8 @@
-import React from 'react';
-import { Brain, ArrowRight } from 'lucide-react';
+
+import { Brain, ArrowRight, UploadCloud } from 'lucide-react';
 
 interface Props {
-  onStart: () => void;
+  onStart: (mode: 'test' | 'mri') => void;
 }
 
 export function LandingPage({ onStart }: Props) {
@@ -15,29 +15,42 @@ export function LandingPage({ onStart }: Props) {
       </div>
       
       <h1>Welcome to NeuroSense</h1>
-      <p style={{ fontSize: '1.2rem', marginBottom: '3rem' }}>
+      <p style={{ fontSize: '1.2rem', marginBottom: '3rem', color: 'var(--text-muted)' }}>
         A modern, interactive platform for early cognitive assessment. 
-        Take our scientifically inspired, user-friendly tests to evaluate your cognitive health in just a few minutes.
+        Choose how you would like to proceed with your evaluation.
       </p>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2rem', marginBottom: '3rem', textAlign: 'left' }}>
-        <div className="glass-panel" style={{ padding: '1.5rem' }}>
-          <div style={{ color: 'var(--primary)', marginBottom: '1rem', fontWeight: 'bold' }}>1. Demographics</div>
-          <p style={{ fontSize: '0.9rem', marginBottom: 0 }}>Provide basic information to baseline your results accurately.</p>
+      <div style={{ display: 'flex', gap: '2rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+        <div 
+          className="glass-panel" 
+          style={{ width: '300px', padding: '2rem', cursor: 'pointer', transition: 'transform 0.2s', textAlign: 'left' }}
+          onClick={() => onStart('test')}
+          onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-5px)'}
+          onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
+        >
+          <Brain size={48} color="var(--secondary)" style={{ marginBottom: '1rem' }} />
+          <h3 style={{ marginBottom: '0.5rem', color: 'var(--secondary)' }}>Take the Assessment</h3>
+          <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>Complete our cognitive evaluation test by answering a series of logic and memory questions.</p>
+          <div style={{ marginTop: '1.5rem', display: 'flex', alignItems: 'center', color: 'var(--text)', gap: '0.5rem', fontWeight: 'bold' }}>
+            Start Test <ArrowRight size={16} />
+          </div>
         </div>
-        <div className="glass-panel" style={{ padding: '1.5rem' }}>
-          <div style={{ color: 'var(--secondary)', marginBottom: '1rem', fontWeight: 'bold' }}>2. Cognitive Test</div>
-          <p style={{ fontSize: '0.9rem', marginBottom: 0 }}>Complete quick tasks measuring memory, attention, and logic.</p>
-        </div>
-        <div className="glass-panel" style={{ padding: '1.5rem' }}>
-          <div style={{ color: 'var(--success)', marginBottom: '1rem', fontWeight: 'bold' }}>3. AI Analysis</div>
-          <p style={{ fontSize: '0.9rem', marginBottom: 0 }}>Receive instant, AI-driven insights on your cognitive wellbeing.</p>
+
+        <div 
+          className="glass-panel" 
+          style={{ width: '300px', padding: '2rem', cursor: 'pointer', transition: 'transform 0.2s', textAlign: 'left' }}
+          onClick={() => onStart('mri')}
+          onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-5px)'}
+          onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
+        >
+          <UploadCloud size={48} color="var(--primary)" style={{ marginBottom: '1rem' }} />
+          <h3 style={{ marginBottom: '0.5rem', color: 'var(--primary)' }}>Upload MRI Report</h3>
+          <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>Upload an MRI scan image to be analyzed by our advanced AI model for early detection.</p>
+          <div style={{ marginTop: '1.5rem', display: 'flex', alignItems: 'center', color: 'var(--text)', gap: '0.5rem', fontWeight: 'bold' }}>
+            Upload Image <ArrowRight size={16} />
+          </div>
         </div>
       </div>
-
-      <button className="btn btn-primary" style={{ fontSize: '1.25rem', padding: '1rem 2.5rem' }} onClick={onStart}>
-        Start Assessment <ArrowRight size={24} />
-      </button>
     </div>
   );
 }

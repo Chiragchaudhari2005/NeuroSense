@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes.predict import router
+from app.routes.predict import router as predict_router
+from app.routes.predict_image import router as predict_image_router
 
 app = FastAPI()
 
@@ -12,4 +13,5 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(router)
+app.include_router(predict_router)
+app.include_router(predict_image_router)

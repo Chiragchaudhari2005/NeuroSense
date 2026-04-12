@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 
 interface Props {
   onComplete: (score: number) => void;
@@ -9,7 +9,7 @@ export function ReactionTest({ onComplete }: Props) {
   const [reactionTime, setReactionTime] = useState<number | null>(null);
   
   const startTime = useRef<number>(0);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const startTest = () => {
     setPhase('waiting');
