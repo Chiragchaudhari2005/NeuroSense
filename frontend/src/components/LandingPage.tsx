@@ -1,8 +1,8 @@
 
-import { Brain, ArrowRight, UploadCloud } from 'lucide-react';
+import { Brain, ArrowRight, UploadCloud, Layers } from 'lucide-react';
 
 interface Props {
-  onStart: (mode: 'test' | 'mri') => void;
+  onStart: (mode: 'test' | 'mri' | 'full') => void;
 }
 
 export function LandingPage({ onStart }: Props) {
@@ -48,6 +48,21 @@ export function LandingPage({ onStart }: Props) {
           <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>Upload an MRI scan image to be analyzed by our advanced AI model for early detection.</p>
           <div style={{ marginTop: '1.5rem', display: 'flex', alignItems: 'center', color: 'var(--text)', gap: '0.5rem', fontWeight: 'bold' }}>
             Upload Image <ArrowRight size={16} />
+          </div>
+        </div>
+
+        <div 
+          className="glass-panel" 
+          style={{ width: '300px', padding: '2rem', cursor: 'pointer', transition: 'transform 0.2s', textAlign: 'left' }}
+          onClick={() => onStart('full')}
+          onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-5px)'}
+          onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
+        >
+          <Layers size={48} color="var(--success)" style={{ marginBottom: '1rem' }} />
+          <h3 style={{ marginBottom: '0.5rem', color: 'var(--success)' }}>Full Assessment</h3>
+          <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>Combine demographics, clinical cognitive tests, and an MRI scan into one final unified workflow.</p>
+          <div style={{ marginTop: '1.5rem', display: 'flex', alignItems: 'center', color: 'var(--text)', gap: '0.5rem', fontWeight: 'bold' }}>
+            Start Combined <ArrowRight size={16} />
           </div>
         </div>
       </div>

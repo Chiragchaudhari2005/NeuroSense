@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Upload, X, FileImage, RefreshCw, CheckCircle, AlertCircle, HelpCircle } from 'lucide-react';
+import { Upload, X, FileImage, RefreshCw, CheckCircle, AlertCircle, HelpCircle, Download } from 'lucide-react';
 
 interface Props {
   onRestart: () => void;
@@ -8,6 +8,7 @@ interface Props {
 interface PredictionData {
   probability: number;
   risk: string;
+  report_url?: string;
 }
 
 export function MRIUpload({ onRestart }: Props) {
@@ -86,6 +87,12 @@ export function MRIUpload({ onRestart }: Props) {
     }
   };
 
+  const handleDownloadReport = () => {
+    if (prediction && prediction.report_url) {
+      window.open(`http://localhost:8000${prediction.report_url}`, '_blank');
+    }
+  };
+
   // Render prediction results
   if (prediction) {
     const isHighRisk = prediction.risk.includes('Moderate') || prediction.risk.includes('High');
@@ -140,9 +147,17 @@ export function MRIUpload({ onRestart }: Props) {
           </div>
         )}
 
-        <button className="btn btn-secondary" onClick={onRestart}>
-          <RefreshCw size={20} /> Upload Another Scan
-        </button>
+        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <button className="btn btn-secondary" onClick={onRestart} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <RefreshCw size={20} /> Upload Another Scan
+          </button>
+          
+          {prediction.report_url && (
+            <button className="btn btn-primary" onClick={handleDownloadReport} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <Download size={20} /> Download Medical Report
+            </button>
+          )}
+        </div>
       </div>
     );
   }

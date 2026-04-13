@@ -4,19 +4,20 @@ import { DemographicsForm } from './components/DemographicsForm';
 import { CognitiveTest } from './components/tests/CognitiveTest';
 import { ResultDashboard } from './components/ResultDashboard';
 import { MRIUpload } from './components/MRIUpload';
+import { FullAssessment } from './components/FullAssessment';
 
 function App() {
   const [step, setStep] = useState(0);
-  const [mode, setMode] = useState<'test' | 'mri' | null>(null);
+  const [mode, setMode] = useState<'test' | 'mri' | 'full' | null>(null);
   const [demoData, setDemoData] = useState<any>(null);
   const [cognitiveScore, setCognitiveScore] = useState<number | null>(null);
 
-  const startAssessment = (selectedMode: 'test' | 'mri') => {
+  const startAssessment = (selectedMode: 'test' | 'mri' | 'full') => {
     setMode(selectedMode);
-    if (selectedMode === 'test') {
+    if (selectedMode === 'test' || selectedMode === 'full') {
       setStep(1);
-    } else {
-      setStep(4); // 4 will be MRI Upload
+    } else if (selectedMode === 'mri') {
+      setStep(4);
     }
   };
   
@@ -27,7 +28,11 @@ function App() {
   
   const handleTestComplete = (score: number) => {
     setCognitiveScore(score);
-    setStep(3);
+    if (mode === 'full') {
+      setStep(5);
+    } else {
+      setStep(3);
+    }
   };
 
   const restart = () => {
@@ -52,8 +57,8 @@ function App() {
 
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
         {step === 0 && <LandingPage onStart={startAssessment} />}
-        {step === 1 && mode === 'test' && <DemographicsForm onComplete={handleDemoComplete} />}
-        {step === 2 && mode === 'test' && <CognitiveTest onComplete={handleTestComplete} />}
+        {step === 1 && (mode === 'test' || mode === 'full') && <DemographicsForm onComplete={handleDemoComplete} />}
+        {step === 2 && (mode === 'test' || mode === 'full') && <CognitiveTest onComplete={handleTestComplete} />}
         {step === 3 && mode === 'test' && (
           <ResultDashboard 
             data={{ ...demoData, cognitive_score: cognitiveScore }}
@@ -62,6 +67,13 @@ function App() {
         )}
         {step === 4 && mode === 'mri' && (
           <MRIUpload onRestart={restart} />
+        )}
+        {step === 5 && mode === 'full' && (
+          <FullAssessment 
+            demoData={demoData} 
+            cognitiveScore={cognitiveScore!} 
+            onRestart={restart} 
+          />
         )}
       </main>
 

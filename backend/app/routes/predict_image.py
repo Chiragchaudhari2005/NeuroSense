@@ -1,11 +1,14 @@
 from fastapi import APIRouter, File, UploadFile
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 import cv2
 import numpy as np
 import joblib
 from skimage.feature import hog
 import sys
 import os
+import tempfile
+import uuid
+from app.utils.report_generator import create_report
 
 # Append the directory containing the model files to the path or use absolute path
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -21,6 +24,9 @@ except Exception as e:
     print(f"Error loading models: {e}")
     scaler = None
     model = None
+
+TEMP_DIR = os.path.join(tempfile.gettempdir(), "neurosense_reports")
+os.makedirs(TEMP_DIR, exist_ok=True)
 
 IMG_SIZE = 128
 CLASSES = [
@@ -73,8 +79,26 @@ async def predict_image(file: UploadFile = File(...)):
         except:
             probability = 1.0
 
-        return {"risk": pred_class, "probability": float(probability)}
+        # Generate Report
+        temp_img_path = os.path.join(TEMP_DIR, f"temp_{uuid.uuid4()}.jpg")
+        cv2.imwrite(temp_img_path, image)
+        
+        report_id, pdf_path = create_report(
+            image_path=temp_img_path,
+            predicted_class=pred_class,
+            confidence=probability,
+            output_dir=TEMP_DIR
+        )
+
+        return {"risk": pred_class, "probability": float(probability), "report_url": f"/download-report/{report_id}"}
     except Exception as e:
         import traceback
         traceback.print_exc()
         return JSONResponse(status_code=500, content={"error": str(e)})
+
+@router.get("/download-report/{report_id}")
+async def download_report(report_id: str):
+    pdf_path = os.path.join(TEMP_DIR, f"{report_id}.pdf")
+    if os.path.exists(pdf_path):
+         return FileResponse(pdf_path, media_type='application/pdf', filename=f"NeuroSense_Report_{report_id}.pdf")
+    return JSONResponse(status_code=404, content={"error": "Report not found"})
