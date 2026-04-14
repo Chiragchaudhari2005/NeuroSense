@@ -42,6 +42,11 @@ function App() {
     setCognitiveScore(null);
   };
 
+  // Landing page gets full-width layout; all other steps use the centred container
+  if (step === 0) {
+    return <LandingPage onStart={startAssessment} />;
+  }
+
   return (
     <div className="container">
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem', padding: '1rem 0', borderBottom: '1px solid var(--glass-border)' }}>
@@ -56,7 +61,6 @@ function App() {
       </header>
 
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-        {step === 0 && <LandingPage onStart={startAssessment} />}
         {step === 1 && (mode === 'test' || mode === 'full') && <DemographicsForm onComplete={handleDemoComplete} />}
         {step === 2 && (mode === 'test' || mode === 'full') && <CognitiveTest onComplete={handleTestComplete} />}
         {step === 3 && mode === 'test' && (
