@@ -124,121 +124,154 @@ export function MRIUpload({ onRestart }: Props) {
     const description = riskDescriptions[prediction.risk] || "Analysis complete. Please consult a healthcare professional for interpretation.";
 
     return (
-      <div className="glass-panel animate-slide-up text-center" style={{ maxWidth: '800px', margin: '0 auto', padding: '4rem 2rem' }}>
-        <div style={{ marginBottom: '2rem' }}>
-          <Icon size={64} color={riskColor} style={{ marginBottom: '1rem' }} />
-          <h2 style={{ fontSize: '2.5rem', color: riskColor, margin: 0 }}>{displayRisk}</h2>
-          <div style={{ 
-            background: 'rgba(255,255,255,0.03)', 
-            border: '1px solid rgba(255,255,255,0.1)',
-            borderRadius: '8px', 
-            padding: '1.5rem', 
-            marginTop: '1.5rem',
-            textAlign: 'left'
-          }}>
-            <h4 style={{ color: 'var(--text-muted)', marginBottom: '0.5rem', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>What this means</h4>
-            <p style={{ fontSize: '1.1rem', lineHeight: '1.6', margin: 0 }}>{description}</p>
-          </div>
-        </div>
+      <div style={{ maxWidth: '1000px', margin: '0 auto' }} className="animate-slide-up">
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 420px', gap: '2rem', alignItems: 'start' }}>
+          {/* Left: result / preview card (white) */}
+          <div style={{ background: '#ffffff', borderRadius: '14px', padding: '2rem', boxShadow: '0 10px 30px rgba(15,23,42,0.08)', textAlign: 'left' }}>
+            <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
+              <Icon size={56} color={riskColor} />
+              <div>
+                <h2 style={{ fontSize: '1.8rem', margin: 0, color: '#0b1220' }}>{displayRisk}</h2>
+                <div style={{ color: '#6b7280', marginTop: '0.25rem' }}>Model confidence: <strong style={{ color: riskColor }}>{(prediction.probability * 100).toFixed(1)}%</strong></div>
+              </div>
+            </div>
 
-        {preview && (
-          <div style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '12px', padding: '2rem', marginBottom: '2rem' }}>
-            <img src={preview} alt="MRI Preview" style={{ width: '200px', height: '200px', objectFit: 'cover', borderRadius: '12px', border: '2px solid rgba(255, 255, 255, 0.1)' }} />
-          </div>
-        )}
+            <div style={{ marginTop: '1.25rem', height: '12px', background: '#f1f5f9', borderRadius: '10px', overflow: 'hidden' }}>
+              <div style={{ width: `${prediction.probability * 100}%`, height: '100%', background: riskColor, transition: 'width 1s ease' }} />
+            </div>
 
-        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <button className="btn btn-secondary" onClick={onRestart} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <RefreshCw size={20} /> Upload Another Scan
-          </button>
-          
-          {prediction.report_url && (
-            <button className="btn btn-primary" onClick={handleDownloadReport} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Download size={20} /> Download Medical Report
-            </button>
-          )}
+            <div style={{ marginTop: '1.5rem', color: '#334155', lineHeight: '1.6' }}>{description}</div>
+
+            {preview && (
+              <div style={{ marginTop: '1.5rem', display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <img src={preview} alt="MRI Preview" style={{ width: '220px', height: '220px', objectFit: 'cover', borderRadius: '12px', border: '1px solid #e6eefc' }} />
+                <div style={{ flex: 1 }}>
+                  <h4 style={{ margin: 0, color: '#0b1220' }}>Uploaded Scan</h4>
+                  <p style={{ marginTop: '0.5rem', color: '#6b7280' }}>{file?.name}</p>
+                  <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
+                    <button className="btn btn-secondary" onClick={onRestart}>New Scan</button>
+                    {prediction.report_url && (
+                      <button className="btn btn-primary" onClick={handleDownloadReport}><Download size={16} /> Download Report</button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Right: control card (glass) */}
+          <div className="glass-panel" style={{ padding: '1.5rem' }}>
+            <h3 style={{ marginTop: 0 }}>Analysis Summary</h3>
+            <div style={{ color: 'var(--text-muted)', marginBottom: '1rem' }}>Detailed interpretation and next steps based on AI findings.</div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1rem' }}>
+              <div style={{ background: 'rgba(255,255,255,0.02)', padding: '0.75rem', borderRadius: '8px', textAlign: 'center' }}>
+                <div style={{ fontSize: '0.9rem', color: '#94a3b8' }}>Risk</div>
+                <div style={{ fontSize: '1.1rem', fontWeight: 700, color: riskColor }}>{displayRisk}</div>
+              </div>
+              <div style={{ background: 'rgba(255,255,255,0.02)', padding: '0.75rem', borderRadius: '8px', textAlign: 'center' }}>
+                <div style={{ fontSize: '0.9rem', color: '#94a3b8' }}>Confidence</div>
+                <div style={{ fontSize: '1.1rem', fontWeight: 700 }}>{(prediction.probability * 100).toFixed(1)}%</div>
+              </div>
+            </div>
+
+            <div style={{ marginBottom: '1rem' }}>
+              <h4 style={{ margin: '0 0 0.5rem 0' }}>Recommended Next Steps</h4>
+              <ul style={{ margin: 0, paddingLeft: '1.15rem', color: 'var(--text-muted)' }}>
+                <li>Consult a clinician for follow-up assessment.</li>
+                <li>Consider further imaging or neuropsychological testing.</li>
+                <li>Save or download the full medical report.</li>
+              </ul>
+            </div>
+
+            <div style={{ display: 'flex', gap: '0.5rem', marginTop: 'auto', justifyContent: 'space-between' }}>
+              <button className="btn btn-secondary" onClick={clearFile} disabled={!file}>Clear</button>
+              <button className="btn btn-primary" onClick={() => window.print()} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>Print</button>
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="glass-panel animate-slide-up text-center" style={{ maxWidth: '600px', margin: '0 auto', padding: '4rem 2rem' }}>
-      <h2 style={{ marginBottom: '1rem' }}>Upload MRI Scan</h2>
-      <p style={{ marginBottom: '2rem', color: 'var(--text-muted)' }}>
-        Please upload a clear MRI image for AI analysis. Accepted formats: JPG, PNG.
-      </p>
+    <div style={{ maxWidth: '1000px', margin: '0 auto' }} className="animate-slide-up">
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 420px', gap: '2rem', alignItems: 'start' }}>
+        {/* Left: upload / preview white card */}
+        <div style={{ background: '#ffffff', borderRadius: '14px', padding: '2rem', boxShadow: '0 10px 30px rgba(15,23,42,0.06)' }}>
+          <h2 style={{ marginTop: 0 }}>Upload MRI Scan</h2>
+          <p style={{ color: '#6b7280' }}>Please upload a clear MRI image for AI analysis. Accepted formats: JPG, PNG.</p>
 
-      {error && (
-        <div style={{ background: 'rgba(239, 68, 68, 0.1)', color: 'var(--danger)', padding: '1rem', borderRadius: '8px', marginBottom: '2rem' }}>
-          {error}
-        </div>
-      )}
+          {error && (
+            <div style={{ background: '#fff1f2', color: 'var(--danger)', padding: '0.9rem', borderRadius: '8px', marginBottom: '1rem', border: '1px solid rgba(239,68,68,0.12)' }}>
+              {error}
+            </div>
+          )}
 
-      {!file ? (
-        <label 
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-          style={{ 
-            display: 'flex', 
-            flexDirection: 'column', 
-            alignItems: 'center', 
-            justifyContent: 'center',
-            padding: '4rem 2rem', 
-            border: '2px dashed var(--glass-border)', 
-            borderRadius: '12px',
-            backgroundColor: 'rgba(255, 255, 255, 0.02)',
-            cursor: 'pointer',
-            transition: 'background-color 0.2s',
-            marginBottom: '2rem'
-          }}
-        >
-          <input type="file" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }} />
-          <Upload size={48} color="var(--primary)" style={{ marginBottom: '1rem' }} />
-          <div style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>Click or drag image to upload</div>
-          <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Supports .jpg, .jpeg, .png</div>
-        </label>
-      ) : (
-        <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
-          <div style={{ position: 'relative', display: 'inline-block' }}>
-            {preview ? (
-              <img src={preview} alt="MRI Preview" style={{ width: '100%', maxWidth: '300px', borderRadius: '12px', border: '2px solid var(--primary)', objectFit: 'cover' }} />
-            ) : (
-              <div style={{ width: '300px', height: '200px', background: 'rgba(255, 255, 255, 0.05)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <FileImage size={64} color="var(--primary)" />
-              </div>
-            )}
-            <button 
-              onClick={clearFile}
-              style={{ position: 'absolute', top: -10, right: -10, background: 'var(--danger)', border: 'none', borderRadius: '50%', width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'white', boxShadow: '0 4px 6px rgba(0,0,0,0.3)' }}
-              title="Remove image"
+          {!file ? (
+            <label 
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
+              style={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                alignItems: 'center', 
+                justifyContent: 'center',
+                padding: '3rem 2rem', 
+                border: '2px dashed #e6eefc', 
+                borderRadius: '12px',
+                backgroundColor: '#f8fbff',
+                cursor: 'pointer',
+                transition: 'background-color 0.2s',
+                marginBottom: '1.25rem'
+              }}
             >
-              <X size={16} />
-            </button>
-          </div>
-          <p style={{ marginTop: '1rem', fontWeight: 'bold', wordBreak: 'break-all' }}>{file.name}</p>
+              <input type="file" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }} />
+              <Upload size={48} color="#0b1220" style={{ marginBottom: '0.75rem' }} />
+              <div style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.4rem', color: '#0b1220' }}>Click or drag image to upload</div>
+              <div style={{ color: '#6b7280', fontSize: '0.9rem' }}>Supports .jpg, .jpeg, .png</div>
+            </label>
+          ) : (
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1rem' }}>
+              <div style={{ width: '320px', height: '220px', borderRadius: '12px', overflow: 'hidden', border: '1px solid #e6eefc' }}>
+                {preview ? (
+                  <img src={preview} alt="MRI Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                  <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f1f7ff' }}>
+                    <FileImage size={64} color="#0b1220" />
+                  </div>
+                )}
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: 700, color: '#0b1220' }}>{file.name}</div>
+                <div style={{ color: '#6b7280', marginTop: '0.5rem' }}>{(file.size / 1024 / 1024).toFixed(2)} MB</div>
+                <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
+                  <button className="btn btn-secondary" onClick={clearFile}>Remove</button>
+                  <button className="btn btn-primary" onClick={handleUploadAndPredict} disabled={loading}>
+                    {loading ? <><RefreshCw size={16} className="animate-spin"/> Analyzing...</> : 'Analyze MRI Scan'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div style={{ marginTop: '0.5rem', color: '#94a3b8', fontSize: '0.9rem' }}>Tip: Use a high-resolution axial slice for better model performance.</div>
         </div>
-      )}
 
-      <button 
-        className="btn btn-primary" 
-        onClick={handleUploadAndPredict} 
-        disabled={!file || loading}
-        style={{ width: '100%', padding: '1rem', fontSize: '1.1rem', display: 'flex', justifyContent: 'center', gap: '0.5rem' }}
-      >
-        {loading ? (
-          <>
-            <RefreshCw size={20} className="animate-spin" style={{ animation: 'spin 2s linear infinite' }} />
-            Analyzing...
-          </>
-        ) : (
-          'Analyze MRI Scan'
-        )}
-      </button>
+        {/* Right: helper / actions card */}
+        <div className="glass-panel" style={{ padding: '1.25rem' }}>
+          <h3 style={{ marginTop: 0 }}>Quick Actions</h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            <button className="btn" style={{ background: '#eef6ff', color: '#0b1220', borderRadius: '10px', padding: '0.6rem 0.75rem' }} onClick={() => alert('Guidance opened')}>How to prepare your MRI</button>
+            <button className="btn" style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.06)', color: 'var(--text-light)', padding: '0.6rem 0.75rem', borderRadius: '10px' }} onClick={() => alert('Contacting specialist')}>Contact Specialist</button>
+          </div>
 
-      <style>{`
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-      `}</style>
+          <div style={{ marginTop: '1rem' }}>
+            <h4 style={{ margin: '0 0 0.5rem 0' }}>Notes</h4>
+            <p style={{ margin: 0, color: 'var(--text-muted)', lineHeight: 1.5 }}>We recommend reviewing the AI findings with a medical professional. This tool is for informational purposes only.</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

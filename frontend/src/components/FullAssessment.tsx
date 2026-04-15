@@ -75,56 +75,78 @@ export function FullAssessment({ demoData, cognitiveScore, onRestart }: Props) {
     let riskColor = 'var(--success)';
     if (final_risk_category === 'Medium Risk') riskColor = 'var(--warning)';
     if (final_risk_category === 'High Risk') riskColor = 'var(--danger)';
-    
+
     return (
-      <div className="glass-panel animate-slide-up text-center" style={{ maxWidth: '900px', margin: '0 auto', padding: '3rem 2rem' }}>
-        <h2 style={{ marginBottom: '2rem' }}>Combined Multimodal Assessment</h2>
-        
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem', marginBottom: '3rem' }}>
-          
-          <div style={{ background: 'rgba(255,255,255,0.03)', padding: '1.5rem', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'left' }}>
-            <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--primary)' }}><Activity size={24}/> Cognitive Result</h3>
-            <div style={{ marginTop: '1rem', fontSize: '1.1rem' }}>
-              <p><b>Risk Probability:</b> {(result.cognitive_result.probability * 100).toFixed(1)}%</p>
+      <div style={{ maxWidth: '1100px', margin: '0 auto' }} className="animate-slide-up">
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 420px', gap: '1.75rem', alignItems: 'start' }}>
+          {/* Left: Summary card */}
+          <div style={{ background: '#ffffff', borderRadius: '14px', padding: '1.75rem', boxShadow: '0 12px 40px rgba(15,23,42,0.06)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem' }}>
+              <div>
+                <h2 style={{ margin: 0, color: '#0b1220' }}>Combined Multimodal Assessment</h2>
+                <div style={{ color: '#6b7280', marginTop: '0.4rem' }}>Summary of cognitive + MRI results</div>
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <div style={{ fontSize: '0.85rem', color: '#94a3b8' }}>Overall AI Score</div>
+                <div style={{ fontSize: '1.4rem', fontWeight: 800, color: riskColor }}>{(final_score * 100).toFixed(1)}%</div>
+              </div>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: '1.25rem' }}>
+              <div style={{ background: 'linear-gradient(180deg,#fbfdff,#f6f8ff)', padding: '1rem', borderRadius: '10px', border: '1px solid #e6eefc' }}>
+                <div style={{ fontSize: '0.85rem', color: '#94a3b8' }}>Cognitive Result</div>
+                <div style={{ fontWeight: 700, marginTop: '0.5rem', color: '#0b1220' }}>{(result.cognitive_result.probability * 100).toFixed(1)}%</div>
+                <div style={{ marginTop: '0.5rem', color: '#6b7280', fontSize: '0.9rem' }}>Probability of cognitive impairment based on test score.</div>
+              </div>
+
+              <div style={{ background: 'linear-gradient(180deg,#fffaf6,#fffbf2)', padding: '1rem', borderRadius: '10px', border: '1px solid #fff1e6' }}>
+                <div style={{ fontSize: '0.85rem', color: '#94a3b8' }}>MRI Result</div>
+                <div style={{ fontWeight: 700, marginTop: '0.5rem', color: '#0b1220' }}>{result.mri_result.risk}</div>
+                <div style={{ marginTop: '0.5rem', color: '#6b7280', fontSize: '0.9rem' }}>Model confidence: {(result.mri_result.probability * 100).toFixed(1)}%</div>
+              </div>
+            </div>
+
+            <div style={{ marginTop: '1.25rem', padding: '1rem', borderRadius: '10px', background: '#f8fafc', border: '1px solid #eef2ff', color: '#334155' }}>
+              <h4 style={{ margin: '0 0 0.5rem 0' }}>{final_risk_category}</h4>
+              <p style={{ margin: 0, lineHeight: 1.6 }}>This combined assessment synthesizes demographic, cognitive testing and MRI imaging results. Use this as a guide for next steps and clinical discussion.</p>
+            </div>
+
+            {result.report_url && (
+              <div style={{ marginTop: '1rem', display: 'flex', gap: '0.6rem' }}>
+                <button className="btn btn-primary" onClick={() => window.open(`http://localhost:8000${result.report_url}`, '_blank')}><Download size={16}/> Download Full Report</button>
+                <button className="btn btn-secondary" onClick={() => window.print()}>Print Summary</button>
+              </div>
+            )}
+          </div>
+
+          {/* Right: Risk card (glass) */}
+          <div className="glass-panel" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <Layers size={28} color={riskColor} />
+              <div>
+                <div style={{ fontSize: '0.85rem', color: '#94a3b8' }}>Final Risk</div>
+                <div style={{ fontSize: '1.25rem', fontWeight: 800, color: riskColor }}>{final_risk_category}</div>
+              </div>
+            </div>
+
+            <div style={{ height: '12px', background: 'rgba(15,23,42,0.06)', borderRadius: '8px', overflow: 'hidden' }}>
+              <div style={{ width: `${final_score * 100}%`, height: '100%', background: riskColor, transition: 'width 1s ease' }} />
+            </div>
+
+            <div style={{ color: 'var(--text-muted)' }}>
+              <h4 style={{ margin: '0 0 0.5rem 0' }}>Recommended Actions</h4>
+              <ul style={{ margin: 0, paddingLeft: '1.15rem' }}>
+                <li>Discuss findings with a neurology specialist.</li>
+                <li>Consider further clinical testing and imaging.</li>
+                <li>Review lifestyle interventions and follow-up plan.</li>
+              </ul>
+            </div>
+
+            <div style={{ marginTop: 'auto', display: 'flex', gap: '0.5rem' }}>
+              <button className="btn btn-secondary" onClick={onRestart} style={{ flex: 1 }}>Start New Assessment</button>
+              <button className="btn btn-primary" onClick={() => window.open(`http://localhost:8000${result.report_url}`, '_blank')} style={{ flex: 1 }}>Download Report</button>
             </div>
           </div>
-          
-          <div style={{ background: 'rgba(255,255,255,0.03)', padding: '1.5rem', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', textAlign: 'left' }}>
-            <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--secondary)' }}><Brain size={24}/> MRI Result</h3>
-            <div style={{ marginTop: '1rem', fontSize: '1.1rem' }}>
-              <p><b>Dementia Class:</b> {result.mri_result.risk}</p>
-              <p><b>Model Confidence:</b> {(result.mri_result.probability * 100).toFixed(1)}%</p>
-            </div>
-          </div>
-          
-        </div>
-
-        <div style={{ background: 'rgba(255,255,255,0.05)', padding: '2rem', borderRadius: '12px', border: `2px solid ${riskColor}`, marginBottom: '3rem' }}>
-          <h2 style={{ fontSize: '2rem', margin: 0, color: riskColor }}>{final_risk_category}</h2>
-          <div style={{ fontSize: '1.5rem', marginTop: '1rem' }}>Overall AI Score: <b>{(final_score * 100).toFixed(1)}%</b></div>
-          
-          <div style={{ marginTop: '2rem', height: '12px', background: 'rgba(255,255,255,0.1)', borderRadius: '6px', overflow: 'hidden', position: 'relative' }}>
-             <div style={{ 
-               position: 'absolute', top: 0, left: 0, height: '100%', 
-               width: `${final_score * 100}%`, backgroundColor: riskColor,
-               transition: 'width 1s ease-in-out'
-             }}></div>
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.5rem', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-             <span>Low (0%)</span><span>Medium (30-70%)</span><span>High (100%)</span>
-          </div>
-        </div>
-
-        <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-          <button className="btn btn-secondary" onClick={onRestart} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <RefreshCw size={20} /> New Assessment
-          </button>
-          
-          {result.report_url && (
-            <button className="btn btn-primary" onClick={() => window.open(`http://localhost:8000${result.report_url}`, '_blank')} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <Download size={20} /> Download Medical Report
-            </button>
-          )}
         </div>
       </div>
     );
