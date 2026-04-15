@@ -6,6 +6,7 @@ import { CognitiveTest } from './components/tests/CognitiveTest';
 import { ResultDashboard } from './components/ResultDashboard';
 import { MRIUpload } from './components/MRIUpload';
 import { FullAssessment } from './components/FullAssessment';
+import { Footer } from './components/Footer';
 
 function App() {
   const [step, setStep] = useState(0);
@@ -103,18 +104,7 @@ function App() {
         )}
       </main>
 
-      {/* Footer - same as LandingPage footer */}
-      <footer style={{
-        width: '100%',
-        backgroundColor: '#0a1628',
-        color: '#94a3b8',
-        textAlign: 'center',
-        padding: '2rem 4rem',
-        fontSize: '0.9rem',
-        marginTop: 'auto',
-      }}>
-        <p>© {new Date().getFullYear()} NeuroSense. For Educational Purposes Only.</p>
-      </footer>
+      <Footer />
     </div>
   );
 }

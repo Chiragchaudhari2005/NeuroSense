@@ -89,41 +89,49 @@ export function ResultDashboard({ data, onRestart }: Props) {
   }
 
   return (
-    <div className="glass-panel animate-slide-up text-center" style={{ maxWidth: '800px', margin: '0 auto' }}>
-      <div style={{ marginBottom: '2rem' }}>
-        <Icon size={64} color={riskColor} style={{ marginBottom: '1rem' }} />
-        <h2 style={{ fontSize: '2.5rem', color: riskColor, margin: 0 }}>{prediction?.risk}</h2>
+    <div className="glass-panel animate-slide-up text-center" style={{ maxWidth: '1200px', margin: '0 auto', background: '#f8fafc', color: '#1e293b', border: '1px solid #e2e8f0', padding: '3.5rem 3rem' }}>
+      <div style={{ marginBottom: '2.5rem' }}>
+        <Icon size={72} color={riskColor} style={{ marginBottom: '1.25rem' }} />
+        <h2 style={{ fontSize: '3rem', color: riskColor, margin: 0, fontWeight: '800' }}>{prediction?.risk}</h2>
       </div>
 
-      <div style={{ background: 'rgba(255,255,255,0.05)', borderRadius: '12px', padding: '2rem', marginBottom: '2rem' }}>
-        <h3 style={{ marginBottom: '0.5rem' }}>AI Assessment Probability</h3>
-        <div style={{ fontSize: '3rem', fontWeight: 'bold' }}>
+      <div style={{ background: '#ffffff', borderRadius: '16px', padding: '2.5rem', marginBottom: '2.5rem', border: '1px solid #cbd5e1', boxShadow: '0 8px 32px rgba(15,23,42,0.05)' }}>
+        <h3 style={{ marginBottom: '1rem', fontSize: '1.3rem', color: '#475569', fontWeight: 600 }}>AI Assessment Probability</h3>
+        <div style={{ fontSize: '4.2rem', fontWeight: '800', color: '#0f172a', letterSpacing: '-0.02em', lineHeight: 1 }}>
           {(prediction!.probability * 100).toFixed(1)}%
         </div>
-        <p style={{ marginTop: '1rem', fontSize: '1.1rem' }}>{summaryText}</p>
+        <p style={{ marginTop: '1.5rem', fontSize: '1.15rem', color: '#475569', lineHeight: 1.6 }}>{summaryText}</p>
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', background: 'var(--bg-dark)', padding: '1.5rem', borderRadius: '12px', marginBottom: '2rem' }}>
-        <div>
-          <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Estimated MMSE</div>
-          <div style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>{data.cognitive_score} / 30</div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1.5rem', background: '#0f172a', color: '#ffffff', padding: '1.75rem 2rem', borderRadius: '16px', marginBottom: '2.5rem', boxShadow: '0 10px 25px rgba(15,23,42,0.1)' }}>
+        <div style={{ textAlign: 'left' }}>
+          <div style={{ color: '#94a3b8', fontSize: '0.95rem', fontWeight: 500, marginBottom: '0.4rem' }}>Estimated MMSE</div>
+          <div style={{ fontSize: '1.4rem', fontWeight: '700', color: '#e2e8f0' }}>{data.cognitive_score} / 30</div>
         </div>
-        <div>
-          <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Analyzed Metrics</div>
-          <div style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>Demo + Cognitive</div>
+        <div style={{ textAlign: 'left' }}>
+          <div style={{ color: '#94a3b8', fontSize: '0.95rem', fontWeight: 500, marginBottom: '0.4rem' }}>Analyzed Metrics</div>
+          <div style={{ fontSize: '1.4rem', fontWeight: '700', color: '#e2e8f0' }}>Demo + Cognitive</div>
         </div>
-        <div>
-          <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Accuracy</div>
-          <div style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>High</div>
+        <div style={{ textAlign: 'left' }}>
+          <div style={{ color: '#94a3b8', fontSize: '0.95rem', fontWeight: 500, marginBottom: '0.4rem' }}>Accuracy</div>
+          <div style={{ fontSize: '1.4rem', fontWeight: '700', color: '#e2e8f0' }}>High</div>
         </div>
       </div>
 
-      <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '2rem' }}>
+      <p style={{ fontSize: '0.9rem', color: '#64748b', marginBottom: '2.5rem', lineHeight: 1.5, maxWidth: '600px', margin: '0 auto 2.5rem' }}>
         Disclaimer: NeuroSense is a preliminary tool and does not provide a definitive clinical diagnosis. 
         Please consult a medical professional for medical advice.
       </p>
 
-      <button className="btn btn-secondary" onClick={onRestart}>
+      <button onClick={onRestart} style={{
+        display: 'inline-flex', alignItems: 'center', gap: '0.6rem',
+        padding: '0.9rem 2.2rem', borderRadius: '12px',
+        background: '#0ea5e9', border: 'none', color: '#ffffff',
+        fontSize: '1.05rem', fontWeight: 600, cursor: 'pointer',
+        boxShadow: '0 6px 16px rgba(14,165,233,0.3)', transition: 'transform 0.2s, box-shadow 0.2s'
+      }}
+      onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 10px 20px rgba(14,165,233,0.4)'; }}
+      onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 6px 16px rgba(14,165,233,0.3)'; }}>
         <RefreshCw size={20} /> Take Assessment Again
       </button>
     </div>

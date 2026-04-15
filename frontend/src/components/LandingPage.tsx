@@ -1,4 +1,5 @@
 import { Brain, ArrowRight, UploadCloud, Layers, Activity, Shield, Zap } from 'lucide-react';
+import { Footer } from './Footer';
 
 interface Props {
   onStart: (mode: 'test' | 'mri' | 'full') => void;
@@ -145,6 +146,12 @@ export function LandingPage({ onStart }: Props) {
         </div>
       </section>
 
+      
+
+      
+      
+      
+
       {/* ── Feature Cards ── */}
       <section style={{
         width: '100%',
@@ -241,55 +248,89 @@ export function LandingPage({ onStart }: Props) {
         </div>
       </section>
 
-      {/* ── Footer ── */}
-      <footer style={{
+      {/* ── Educational / Info Section ── */}
+      <section style={{
         width: '100%',
-        backgroundColor: '#0a1628',
-        color: '#94a3b8',
-        padding: '3rem 4rem',
-        fontSize: '0.95rem',
-        marginTop: 'auto',
+        padding: '4rem 4rem',
+        backgroundColor: '#f8fbff',
       }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr 240px', gap: '1.5rem', alignItems: 'start' }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.6rem' }}>
-              <Brain size={24} color="#94a3b8" />
-              <span style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff' }}>NeuroSense</span>
-            </div>
-            <div style={{ color: '#94a3b8', lineHeight: 1.6 }}>AI-driven cognitive health assessments combining quick tests and MRI analysis. For educational and research use.</div>
-          </div>
+        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <h2 style={{ fontSize: '1.9rem', fontWeight: '700', color: '#0a1628', marginBottom: '0.6rem' }}>What is Alzheimer's?</h2>
+          <p style={{ color: '#475569', marginBottom: '1.6rem', lineHeight: 1.7 }}>
+            Alzheimer's disease is a progressive neurological disorder that affects memory, thinking and behaviour. It is the most common cause of dementia among older adults.
+          </p>
 
-          <div style={{ display: 'flex', gap: '2rem' }}>
-            <div>
-              <div style={{ fontWeight: 700, color: '#ffffff', marginBottom: '0.6rem' }}>Product</div>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, color: '#94a3b8' }}>
-                <li style={{ marginBottom: '0.4rem' }}>Assessment</li>
-                <li style={{ marginBottom: '0.4rem' }}>MRI Analysis</li>
-                <li style={{ marginBottom: '0.4rem' }}>Research</li>
-              </ul>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem', marginBottom: '2rem' }}>
+            <div style={{ background: '#fff', borderRadius: '12px', padding: '1.25rem', boxShadow: '0 6px 20px rgba(12,40,80,0.06)' }}>
+              <div style={{ fontWeight: 700, color: '#0b2340', marginBottom: '0.6rem' }}>Who is affected?</div>
+              <div style={{ color: '#475569' }}>Mostly older adults; risk increases with age but early-onset cases exist.</div>
             </div>
-            <div>
-              <div style={{ fontWeight: 700, color: '#ffffff', marginBottom: '0.6rem' }}>Company</div>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, color: '#94a3b8' }}>
-                <li style={{ marginBottom: '0.4rem' }}>About Us</li>
-                <li style={{ marginBottom: '0.4rem' }}>Careers</li>
-                <li style={{ marginBottom: '0.4rem' }}>Privacy</li>
-              </ul>
+
+            <div style={{ background: '#fff', borderRadius: '12px', padding: '1.25rem', boxShadow: '0 6px 20px rgba(12,40,80,0.06)' }}>
+              <div style={{ fontWeight: 700, color: '#0b2340', marginBottom: '0.6rem' }}>Risk Factors</div>
+              <div style={{ color: '#475569' }}>Age, genetics, cardiovascular health, head injuries, and lifestyle factors can influence risk.</div>
+            </div>
+
+            <div style={{ background: '#fff', borderRadius: '12px', padding: '1.25rem', boxShadow: '0 6px 20px rgba(12,40,80,0.06)' }}>
+              <div style={{ fontWeight: 700, color: '#0b2340', marginBottom: '0.6rem' }}>Common Symptoms</div>
+              <div style={{ color: '#475569' }}>Memory loss, difficulty planning or solving problems, confusion with time or place, and changes in mood or personality.</div>
             </div>
           </div>
 
-          <div style={{ textAlign: 'right' }}>
-            <div style={{ fontWeight: 700, color: '#ffffff', marginBottom: '0.6rem' }}>Contact</div>
-            <div style={{ color: '#94a3b8', marginBottom: '0.8rem' }}>hello@neurosense.example</div>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.6rem', color: '#94a3b8' }}>
-              <a href="#" style={{ color: '#94a3b8', textDecoration: 'none' }}>GitHub</a>
-              <a href="mailto:hello@neurosense.example" style={{ color: '#94a3b8', textDecoration: 'none' }}>Email</a>
+          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '2rem' }}>
+            <div style={{ flex: '1 1 320px', background: 'linear-gradient(180deg,#ffffff,#f7fbff)', borderRadius: '12px', padding: '1.5rem', boxShadow: '0 8px 28px rgba(2,6,23,0.06)' }}>
+              <div style={{ fontWeight: 700, color: '#0b2340', marginBottom: '0.6rem' }}>Prevention & Early Detection</div>
+              <ul style={{ margin: 0, paddingLeft: '1.15rem', color: '#475569', lineHeight: 1.7 }}>
+                <li>Keep active physically and mentally.</li>
+                <li>Maintain a heart-healthy diet and manage blood pressure.</li>
+                <li>Early screening and regular check-ups help track cognitive changes.</li>
+              </ul>
+            </div>
+
+            <div style={{ flex: '1 1 320px', background: 'linear-gradient(180deg,#ffffff,#fffaf6)', borderRadius: '12px', padding: '1.5rem', boxShadow: '0 8px 28px rgba(2,6,23,0.06)' }}>
+              <div style={{ fontWeight: 700, color: '#0b2340', marginBottom: '0.6rem' }}>Support & Care</div>
+              <div style={{ color: '#475569', lineHeight: 1.7 }}>
+                Care planning, cognitive therapies, and supportive communities can improve quality of life. Consult clinicians for personalised care plans.
+              </div>
+            </div>
+          </div>
+
+          <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0a1628', marginBottom: '0.8rem' }}>Our trusted clients</h3>
+            <p style={{ color: '#64748b', maxWidth: '720px', margin: '0 auto 1.2rem' }}>Insights from users and clinicians who used NeuroSense during early screening and care planning.</p>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: '1.2rem', alignItems: 'stretch' }}>
+              {[{
+                quote: 'The diagnosis process is fantastic. It’s motivating to see how much I’ve improved over time. The app has a great mix of common and challenging puzzles.',
+                name: 'Fatima Khadi', role: 'Family caregiver', initials: 'FK'
+              },{
+                quote: 'The progress tracker is invaluable. It’s motivating to see how much I’ve improved over time.',
+                name: 'Hassan Ali', role: 'Clinical researcher', initials: 'HA'
+              },{
+                quote: 'The app paired with imaging provided helpful context for early-stage intervention planning.',
+                name: 'Jorge Martinez', role: 'Neurologist', initials: 'JM'
+              }].map((t, i) => (
+                <div key={i} style={{ background: '#ffffff', borderRadius: '14px', padding: '1.4rem', boxShadow: '0 12px 30px rgba(2,6,23,0.06)', minHeight: '160px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <div style={{ textAlign: 'left' }}>
+                    <div style={{ fontSize: '2.2rem', lineHeight: 1, color: '#e6eefc', opacity: 0.95, marginBottom: '0.4rem' }}>“</div>
+                    <div style={{ color: '#334155', fontSize: '0.98rem', lineHeight: 1.6 }}>{t.quote}</div>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', marginTop: '1rem' }}>
+                    <div style={{ width: '44px', height: '44px', borderRadius: '50%', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, color: '#0b2340' }}>{t.initials}</div>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                      <div style={{ fontWeight: 700, color: '#0b2340' }}>{t.name}</div>
+                      <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{t.role}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
+      </section>
 
-        <div style={{ marginTop: '1.25rem', textAlign: 'center', color: '#6b7280' }}>© {new Date().getFullYear()} NeuroSense. For Educational Purposes Only.</div>
-      </footer>
+      <Footer />
     </div>
   );
 }
