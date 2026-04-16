@@ -153,45 +153,50 @@ export function FullAssessment({ demoData, cognitiveScore, onRestart }: Props) {
   }
 
   return (
-    <div className="glass-panel animate-slide-up" style={{ maxWidth: '700px', margin: '0 auto', padding: '3rem 2rem' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
-        <Layers size={32} color="var(--primary)" />
-        <h2 style={{ margin: 0 }}>Multimodal Assessment</h2>
+    <div className="animate-slide-up" style={{ maxWidth: '700px', margin: '0 auto', padding: '0', background: '#ffffff', borderRadius: '14px', boxShadow: '0 12px 40px rgba(15,23,42,0.06)' }}>
+      <div style={{ padding: '2rem 2rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
+          <span style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(59,130,246,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <Layers size={24} color="#3b82f6" />
+          </span>
+          <h2 style={{ margin: 0, color: '#0b1220', fontSize: '1.5rem', fontWeight: 700 }}>Multimodal Assessment</h2>
+        </div>
+        
+        <p style={{ marginBottom: '2rem', color: '#6b7280', fontSize: '0.95rem', lineHeight: 1.6 }}>
+          Your demographic data and cognitive score ({cognitiveScore}/30) have been recorded. 
+          Please upload an MRI scan to complete the comprehensive AI evaluation.
+        </p>
+
+        {error && (
+          <div style={{ background: '#fee2e2', color: '#dc2626', padding: '1rem', borderRadius: '8px', marginBottom: '2rem', fontSize: '0.9rem' }}>
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit}>
+          <div className="form-group" style={{ marginBottom: '2rem' }}>
+             <label style={{ fontWeight: '600', fontSize: '0.95rem', color: '#1e293b', display: 'block', marginBottom: '0.5rem' }}>MRI Image</label>
+             {!file ? (
+               <label style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2.5rem 2rem', border: '2px dashed #cbd5e1', borderRadius: '12px', cursor: 'pointer', background: '#f8fafc', transition: 'all 0.3s' }}>
+                 <input type="file" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }} />
+                 <Upload size={32} color="#3b82f6" style={{ marginBottom: '1rem' }} />
+                 <div style={{ color: '#1e293b', fontWeight: 500 }}>Click or drag to upload MRI</div>
+                 <div style={{ color: '#6b7280', fontSize: '0.85rem', marginTop: '0.25rem' }}>PNG, JPG, DICOM supported</div>
+               </label>
+             ) : (
+               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: '#f8fafc', padding: '1rem', borderRadius: '12px', border: '1.5px solid #cbd5e1' }}>
+                 <img src={preview!} alt="preview" style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '8px' }} />
+                 <div style={{ flex: 1, wordBreak: 'break-all', color: '#1e293b' }}>{file.name}</div>
+                 <button type="button" onClick={() => { setFile(null); setPreview(null); }} className="btn" style={{ background: '#ef4444', color: 'white', padding: '0.5rem 1rem', fontSize: '0.9rem' }}>Change</button>
+               </div>
+             )}
+          </div>
+
+          <button type="submit" disabled={!file || loading} className="btn btn-primary" style={{ width: '100%', padding: '1rem', display: 'flex', justifyContent: 'center', gap: '0.5rem', fontSize: '1rem', fontWeight: 600 }}>
+            {loading ? <><RefreshCw size={20} className="animate-spin"/> Analyzing...</> : <><Layers size={20}/> Generate Full Assessment</>}
+          </button>
+        </form>
       </div>
-      
-      <p style={{ marginBottom: '2rem', color: 'var(--text-muted)' }}>
-        Your demographic data and cognitive score ({cognitiveScore}/30) have been recorded. 
-        Please upload an MRI scan to complete the comprehensive AI evaluation.
-      </p>
-
-      {error && (
-        <div style={{ background: 'rgba(239, 68, 68, 0.1)', color: 'var(--danger)', padding: '1rem', borderRadius: '8px', marginBottom: '2rem' }}>
-          {error}
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit}>
-        <div className="form-group" style={{ marginBottom: '2rem' }}>
-           <label>MRI Image</label>
-           {!file ? (
-             <label style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem', border: '2px dashed var(--glass-border)', borderRadius: '12px', cursor: 'pointer', background: 'rgba(255,255,255,0.02)' }}>
-               <input type="file" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }} />
-               <Upload size={32} color="var(--primary)" style={{ marginBottom: '1rem' }} />
-               <div>Click or drag to upload MRI</div>
-             </label>
-           ) : (
-             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '12px' }}>
-               <img src={preview!} alt="preview" style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: '8px' }} />
-               <div style={{ flex: 1, wordBreak: 'break-all' }}>{file.name}</div>
-               <button type="button" onClick={() => { setFile(null); setPreview(null); }} className="btn" style={{ background: 'var(--danger)', padding: '0.5rem' }}>Change</button>
-             </div>
-           )}
-        </div>
-
-        <button type="submit" disabled={!file || loading} className="btn btn-primary" style={{ width: '100%', padding: '1rem', display: 'flex', justifyContent: 'center', gap: '0.5rem' }}>
-          {loading ? <><RefreshCw size={20} className="animate-spin"/> Analyzing...</> : <><Layers size={20}/> Generate Full Assessment</>}
-        </button>
-      </form>
     </div>
   );
 }
